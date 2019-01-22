@@ -1,9 +1,11 @@
 ---
-- name: Discover the EC2 instance region
-  # Reversing the string is hacky but readable and efficient enough...
-  shell: "/opt/aws/bin/ec2-metadata --availability-zone| awk '{ print $2}' | rev | cut -c 2- | rev"
-  register: ec2_region
-  check_mode: no
+#- name: Discover the EC2 instance region
+#  # Reversing the string is hacky but readable and efficient enough...
+#  shell: "/opt/aws/bin/ec2-metadata --availability-zone| awk '{ print $2}' | rev | cut -c 2- | rev"
+#  register: ec2_region
+#  check_mode: no
+- name: get ec2 facts
+  - ec2_metadata_facts:
 
 - name: Configure /tmp/awslogs.conf
   template:
@@ -22,4 +24,4 @@
     url: https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py
 
 - name: Install the AWS CloudWatch Logs daemon
-  shell: python /tmp/awslogs-agent-setup.py -n -r {{ ec2_region.stdout }} -c /tmp/awslogs.conf
+  shell: python /tmp/awslogs-agent-setup.py -n -r {{ ansible_ec2_placement_region }} -c /tmp/awslogs.conf
