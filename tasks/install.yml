@@ -5,7 +5,7 @@
 #  register: ec2_region
 #  check_mode: no
 - name: get ec2 facts
-  - ec2_metadata_facts:
+  ec2_metadata_facts:
 
 - name: Configure /tmp/awslogs.conf
   template:
