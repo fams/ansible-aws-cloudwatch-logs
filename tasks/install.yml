@@ -1,7 +1,7 @@
 ---
 - name: Discover the EC2 instance region
   # Reversing the string is hacky but readable and efficient enough...
-  shell: "ec2metadata --availability-zone | rev | cut -c 2- | rev"
+  shell: "ec2-metadata --availability-zone | rev | cut -c 2- | rev"
   register: ec2_region
   check_mode: no
 
